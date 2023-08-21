@@ -10,6 +10,9 @@ from dpr_scale.conf.config import MainConfig
 from omegaconf import open_dict
 from pytorch_lightning.trainer import Trainer
 
+import torch
+torch.backends.cuda.matmul.allow_tf32 = True
+
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg: MainConfig):
