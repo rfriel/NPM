@@ -82,9 +82,7 @@ class CorpusDataModule(LightningDataModule):
         return self.collate(batch, "train")
 
     def collate(self, batch, stage):
-        return {"input_ids": torch.LongTensor([b["input_ids"] for b in batch]),
+        return {"input_ids": torch.LongTensor([b["input_ids"].astype(int) for b in batch]),
                 "attention_mask": torch.LongTensor([b["attention_mask"] for b in batch]),
                 "is_valid": torch.LongTensor([b["is_valid"] for b in batch]),
                 }
-
-
