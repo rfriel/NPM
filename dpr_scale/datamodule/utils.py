@@ -98,7 +98,7 @@ class MemoryMappedDataset(torch.utils.data.Dataset):
         return self.process_line(line)
 
 class CorpusDataset(torch.utils.data.Dataset):
-    def __init__(self, path):
+    def __init__(self, path, maxlen=None):
 
         if path is None:
             self.tot = 0
@@ -114,6 +114,8 @@ class CorpusDataset(torch.utils.data.Dataset):
                 self.valid_candidates = None
 
             self.tot = len(self.block_idx_to_token_idx)
+            if maxlen is not None:
+                self.tot = maxlen
             self.block_idx_to_token_idx = np.concatenate(
                 [self.block_idx_to_token_idx, [len(self.all_input_ids)]])
 
@@ -138,5 +140,3 @@ class CorpusDataset(torch.utils.data.Dataset):
             is_valid = [i for i, _id in enumerate(input_ids) if _id not in [0, 2]]
 
         return {"input_ids": input_ids, "attention_mask": attention_mask, "is_valid": is_valid}
-
-

@@ -9,6 +9,7 @@ model_name=$1
 corpus=$2
 open=$3
 bs=$4
+maxlen=$5
 
 
 out=$(pwd)/save/${model_name}
@@ -30,6 +31,7 @@ if [[ $open == "true" ]] ; then
                 datamodule.train_path=null \
                 datamodule.val_path=null \
                 datamodule.test_path=${data_path} \
+                datamodule.maxlen=$maxlen \
                 trainer.num_nodes=1 \
                 trainer.precision=16 \
                 trainer.gpus=1 \

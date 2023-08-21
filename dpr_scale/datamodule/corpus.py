@@ -30,6 +30,7 @@ class CorpusDataModule(LightningDataModule):
         batch_size: int = 2,
         val_batch_size: int = 0,  # defaults to batch_size
         test_batch_size: int = 0,  # defaults to val_batch_size
+        maxlen=None,
     ):
         super().__init__()
         self.batch_size = batch_size
@@ -40,9 +41,9 @@ class CorpusDataModule(LightningDataModule):
         )
 
         self.datasets = {
-            "train": CorpusDataset(train_path),
-            "valid": CorpusDataset(val_path),
-            "test": CorpusDataset(test_path),
+            "train": CorpusDataset(train_path, maxlen=maxlen),
+            "valid": CorpusDataset(val_path, maxlen=maxlen),
+            "test": CorpusDataset(test_path, maxlen=maxlen),
         }
 
     def train_dataloader(self):
