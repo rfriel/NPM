@@ -560,7 +560,8 @@ class MaskedLanguageModelingEncodingTask(MaskedLanguageModelingTask):
                  "attention_mask": batch["attention_mask"],
                  "output_hidden_states": True}
 
-        outputs = self.encoder(batch)
+        with torch.cuda.amp.autocast(enabled=self.use_half_precision):
+            outputs = self.encoder(batch)
         hidden_states = outputs.hidden_states[-1] # [batch_size, length, hidden]
 
         return batch["input_ids"].cpu(), \
@@ -636,6 +637,3 @@ class MaskedLanguageModelingEncodingTask(MaskedLanguageModelingTask):
         assert tot==dstore_size, (tot, dstore_size)
         print ("Finished saving %d vectors at %s" % (tot, embed_path))
         torch.distributed.barrier()  # make sure rank 0 waits for all to complete
-
-
-

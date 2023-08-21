@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
-# 
+#
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
@@ -16,7 +16,7 @@ ctx_embeddings_dir=${out}/dstore/${corpus}
 
 if [[ $open == "true" ]] ; then
     if [[ $corpus == "enwiki-"* ]] ; then
-        
+
         arr=(${corpus//-/ })
         data_path=$(pwd)/corpus/enwiki/${arr[1]}.npy
         if [[ -f "${ctx_embeddings_dir}/embeddings_wo_stopwords.float16.npy" ]] ; then
@@ -31,7 +31,7 @@ if [[ $open == "true" ]] ; then
                 datamodule.val_path=null \
                 datamodule.test_path=${data_path} \
                 trainer.num_nodes=1 \
-                trainer.precision=32 \
+                trainer.precision=16 \
                 trainer.gpus=1 \
                 task.query_encoder_cfg.model_path=facebook/${model_name} \
                 +task.ctx_embeddings_dir=${ctx_embeddings_dir} \
